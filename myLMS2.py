@@ -1,9 +1,9 @@
 import numpy as np
-import matplotlib.pyplot as plt
 import soundfile as sf
 from scipy.signal import spectrogram, welch
 import time
 import streamlit as st
+import matplotlib.pyplot as plt
 
 # Load audio file
 def load_audio_file():
@@ -63,71 +63,27 @@ frequencies, times, psd_original = spectrogram(audio_signal, fs)
 _, _, psd_filtered_spect = spectrogram(filtered_audio, fs)
 
 # Plotting
-plt.figure(figsize=(10, 10))
+st.title('Audio Denoising with LMS Filter')
 
-plt.subplot(8, 1, 1)
-plt.plot(audio_signal, label='Original Audio Signal')
-plt.title('Original Audio Signal')
-plt.xlabel('Sample')
-plt.ylabel('Amplitude')
-plt.legend()
-plt.subplots_adjust(hspace=3)
+# Plot original audio
+st.subheader('Original Audio Signal')
+st.line_chart(audio_signal)
 
-plt.subplot(8, 1, 2)
-plt.plot(noisy_audio_signal, label='Noisy Audio Signal', alpha=0.7)
-plt.title('Noisy Audio Signal')
-plt.xlabel('Sample')
-plt.ylabel('Amplitude')
-plt.legend()
-plt.subplots_adjust(hspace=3)
+# Plot noisy audio
+st.subheader('Noisy Audio Signal')
+st.line_chart(noisy_audio_signal)
 
-plt.subplot(8, 1, 3)
-plt.plot(filtered_audio, label='Filtered Audio Signal (LMS)', linestyle='dashed')
-plt.title('Filtered Audio Signal (LMS)')
-plt.xlabel('Sample')
-plt.ylabel('Amplitude')
-plt.legend()
-plt.subplots_adjust(hspace=3)
+# Plot filtered audio
+st.subheader('Filtered Audio Signal (LMS)')
+st.line_chart(filtered_audio)
 
-plt.subplot(8, 1, 4)
-plt.plot(error, label='Error', color='red')
-plt.title('Error Between Original and Filtered Signals')
-plt.xlabel('Sample')
-plt.ylabel('Amplitude')
-plt.legend()
-plt.subplots_adjust(hspace=3)
+# Plot error
+error = audio_signal - filtered_audio
+st.subheader('Error Between Original and Filtered Signals')
+st.line_chart(error)
 
-plt.subplot(8, 1, 5)
-plt.plot(mse_values, label='Time Domain MSE', color='green')
-plt.title('Time Domain MSE')
-plt.xlabel('Sample')
-plt.ylabel('MSE')
-plt.legend()
-plt.subplots_adjust(hspace=3)
-
-plt.subplot(8, 1, 6)
-plt.pcolormesh(times, frequencies, 10 * np.log10(psd_original), shading='auto', cmap='viridis')
-plt.title('Algorithm PSD - Original Signal')
-plt.xlabel('Time (s)')
-plt.ylabel('Frequency (Hz)')
-plt.subplots_adjust(hspace=3)
-
-plt.subplot(8, 1, 7)
-plt.pcolormesh(times, frequencies, 10 * np.log10(psd_filtered_spect), shading='auto', cmap='viridis')
-plt.title('Algorithm PSD - Filtered Signal (LMS)')
-plt.xlabel('Time (s)')
-plt.ylabel('Frequency (Hz)')
-plt.subplots_adjust(hspace=3)
-
-plt.subplot(8, 1, 8)
-plt.semilogy(frequencies_input, psd_input, label='Input Signal')
-plt.semilogy(frequencies_filtered, psd_filtered, label='Filtered Signal (LMS)')
-plt.title('Power Spectral Density (PSD)')
-plt.xlabel('Frequency (Hz)')
-plt.ylabel('Power/Frequency (dB/Hz)')
-plt.legend()
-plt.subplots_adjust(hspace=3)
-
-plt.tight_layout()
-plt.show()
-st.pyplot()
+# Plot time domain MSE
+st.subheader('Time Domain MSE')
+st.line_chart(mse_values)
+# Show the Streamlit app
+st.write("This is your Streamlit app.")
