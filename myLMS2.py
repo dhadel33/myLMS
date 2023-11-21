@@ -1,3 +1,4 @@
+!pip install soundfile
 import numpy as np
 import soundfile as sf
 from scipy.signal import spectrogram, welch
