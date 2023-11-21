@@ -5,8 +5,12 @@ from scipy.signal import spectrogram, welch
 import time
 
 # Load audio file
-file_path = "C:/Users/Dhadel/ADSPRECORDING.wav"
-audio_signal, fs = sf.read(file_path)
+def load_audio_file():
+    file_path = input("Enter the path of the audio file: ")
+    audio_signal, fs = sf.read(file_path)
+    return audio_signal, fs
+# Load audio file
+audio_signal, fs = load_audio_file()    
 
 # Convert stereo to mono if needed
 if audio_signal.ndim == 2:
