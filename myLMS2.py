@@ -3,10 +3,11 @@ import matplotlib.pyplot as plt
 import soundfile as sf
 from scipy.signal import spectrogram, welch
 import time
+import streamlit as st
 
 # Load audio file
 def load_audio_file():
-    file_path = input("Enter the path of the audio file: ")
+    file_path = st.text_input("Enter the path of the audio file:")
     audio_signal, fs = sf.read(file_path)
     return audio_signal, fs
 # Load audio file
@@ -129,3 +130,4 @@ plt.subplots_adjust(hspace=3)
 
 plt.tight_layout()
 plt.show()
+st.pyplot()
