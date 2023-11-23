@@ -1,6 +1,5 @@
 import numpy as np
 import streamlit as st
-from scipy.signal import spectrogram, welch
 import time
 
 # Function to generate sinusoidal signal based on user input
@@ -21,7 +20,7 @@ def generate_sinusoidal_signal():
 
 # LMS filter function
 def lms_filter(input_signal, desired_signal, order, mu):
-    start_time = time.time()  # Record the start time
+   start_time = time.time()  # Record the start time
     num_samples = len(input_signal)
     weights = np.zeros(order)
     output_signal = np.zeros(num_samples)
@@ -41,8 +40,11 @@ def lms_filter(input_signal, desired_signal, order, mu):
 
 # Streamlit app
     st.title('Audio Denoising with LMS Filter - Sinusoidal Signal')
-
-# Generate sinusoidal signal
+    
+    # Explanation or instructions
+    st.write("This app allows you to generate a sinusoidal signal, add noise, apply an LMS filter for denoising, and visualize the results.")
+    
+    # Generate sinusoidal signal
     sinusoidal_signal, fs = generate_sinusoidal_signal()
     
     # Check if sinusoidal signal is generated
@@ -60,14 +62,6 @@ def lms_filter(input_signal, desired_signal, order, mu):
         desired_signal = sinusoidal_signal
         filtered_signal, mse_values = lms_filter(noisy_sinusoidal_signal, desired_signal, order, mu)
     
-        # Welch method for PSD estimation
-        frequencies_input, psd_input = welch(sinusoidal_signal, fs, nperseg=1024)
-        frequencies_filtered, psd_filtered = welch(filtered_signal, fs, nperseg=1024)
-    
-        # MUSIC algorithm for PSD estimation
-        frequencies, times, psd_original = spectrogram(sinusoidal_signal, fs)
-        _, _, psd_filtered_spect = spectrogram(filtered_signal, fs)
-    
         # Plotting
         st.subheader('Original Sinusoidal Signal')
         st.line_chart(sinusoidal_signal)
@@ -80,6 +74,6 @@ def lms_filter(input_signal, desired_signal, order, mu):
     
         st.subheader('Time Domain MSE')
         st.line_chart(mse_values)
-
-    # Show the Streamlit app
-    st.write("This is your Streamlit app.")
+    
+        # Show the Streamlit app
+        st.write("This is your Streamlit app.")
