@@ -24,46 +24,46 @@ def lms_filter(input_signal, desired_signal, order, mu):
     # (unchanged)
 
 # Streamlit app
-st.title('Audio Denoising with LMS Filter - Sinusoidal Signal')
+    st.title('Audio Denoising with LMS Filter - Sinusoidal Signal')
 
 # Generate sinusoidal signal
-sinusoidal_signal, fs = generate_sinusoidal_signal()
-
-# Check if sinusoidal signal is generated
-if sinusoidal_signal is not None:
-    # Add Gaussian noise to the sinusoidal signal
-    noise_level = 0.1
-    noise = noise_level * np.random.randn(len(sinusoidal_signal))
-    noisy_sinusoidal_signal = sinusoidal_signal + noise
-
-    # LMS filter parameters
-    mu = st.slider('Step Size (mu)', 0.01, 1.0, 0.01)
-    order = st.slider('Filter Order', 5, 100, 32)
-
-    # Apply LMS filter to the noisy sinusoidal signal
-    desired_signal = sinusoidal_signal
-    filtered_signal, mse_values = lms_filter(noisy_sinusoidal_signal, desired_signal, order, mu)
-
-    # Welch method for PSD estimation
-    frequencies_input, psd_input = welch(sinusoidal_signal, fs, nperseg=1024)
-    frequencies_filtered, psd_filtered = welch(filtered_signal, fs, nperseg=1024)
-
-    # MUSIC algorithm for PSD estimation
-    frequencies, times, psd_original = spectrogram(sinusoidal_signal, fs)
-    _, _, psd_filtered_spect = spectrogram(filtered_signal, fs)
-
-    # Plotting
-    st.subheader('Original Sinusoidal Signal')
-    st.line_chart(sinusoidal_signal)
-
-    st.subheader('Noisy Sinusoidal Signal')
-    st.line_chart(noisy_sinusoidal_signal)
-
-    st.subheader('Filtered Sinusoidal Signal (LMS)')
-    st.line_chart(filtered_signal)
-
-    st.subheader('Time Domain MSE')
-    st.line_chart(mse_values)
+    sinusoidal_signal, fs = generate_sinusoidal_signal()
+    
+    # Check if sinusoidal signal is generated
+    if sinusoidal_signal is not None:
+        # Add Gaussian noise to the sinusoidal signal
+        noise_level = 0.1
+        noise = noise_level * np.random.randn(len(sinusoidal_signal))
+        noisy_sinusoidal_signal = sinusoidal_signal + noise
+    
+        # LMS filter parameters
+        mu = st.slider('Step Size (mu)', 0.01, 1.0, 0.01)
+        order = st.slider('Filter Order', 5, 100, 32)
+    
+        # Apply LMS filter to the noisy sinusoidal signal
+        desired_signal = sinusoidal_signal
+        filtered_signal, mse_values = lms_filter(noisy_sinusoidal_signal, desired_signal, order, mu)
+    
+        # Welch method for PSD estimation
+        frequencies_input, psd_input = welch(sinusoidal_signal, fs, nperseg=1024)
+        frequencies_filtered, psd_filtered = welch(filtered_signal, fs, nperseg=1024)
+    
+        # MUSIC algorithm for PSD estimation
+        frequencies, times, psd_original = spectrogram(sinusoidal_signal, fs)
+        _, _, psd_filtered_spect = spectrogram(filtered_signal, fs)
+    
+        # Plotting
+        st.subheader('Original Sinusoidal Signal')
+        st.line_chart(sinusoidal_signal)
+    
+        st.subheader('Noisy Sinusoidal Signal')
+        st.line_chart(noisy_sinusoidal_signal)
+    
+        st.subheader('Filtered Sinusoidal Signal (LMS)')
+        st.line_chart(filtered_signal)
+    
+        st.subheader('Time Domain MSE')
+        st.line_chart(mse_values)
 
     # Show the Streamlit app
     st.write("This is your Streamlit app.")
