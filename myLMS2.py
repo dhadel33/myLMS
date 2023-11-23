@@ -21,7 +21,23 @@ def generate_sinusoidal_signal():
 
 # LMS filter function
 def lms_filter(input_signal, desired_signal, order, mu):
-    # (unchanged)
+    start_time = time.time()  # Record the start time
+    num_samples = len(input_signal)
+    weights = np.zeros(order)
+    output_signal = np.zeros(num_samples)
+    mse_values = np.zeros(num_samples - order)
+
+    for i in range(order, num_samples):
+        x = input_signal[i-order:i]
+        y_hat = np.dot(weights, x)
+        error = desired_signal[i] - y_hat
+        weights = weights + mu * error * x
+        output_signal[i] = y_hat
+        mse_values[i - order] = np.mean((desired_signal[i - order:i + 1] - y_hat) ** 2)
+
+    end_time = time.time()  # Record the end time
+    elapsed_time = end_time - start_time  # Calculate the elapsed time
+    print(f"Time taken for LMS process: {elapsed_time:.4f} seconds")
 
 # Streamlit app
     st.title('Audio Denoising with LMS Filter - Sinusoidal Signal')
